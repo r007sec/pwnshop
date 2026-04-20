@@ -117,7 +117,7 @@ pwnshop/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pwnshop.git
+git clone https://github.com/r007sec/pwnshop.git
 cd pwnshop
 ```
 
@@ -168,7 +168,7 @@ The app will be available at **http://localhost:3000**
 ### Steps
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pwnshop.git
+git clone https://github.com/r007sec/pwnshop.git
 cd pwnshop
 
 # Copy environment file
@@ -369,27 +369,6 @@ Seller adds XSS payload to product description → `PWN-032` (indirect injection
 
 ---
 
-## Team Workflow
-
-### For the instructor / repo owner
-```bash
-# After setting up the repo privately on GitHub
-# Go to: Settings → Collaborators → Add people
-# Add teammates by GitHub username or email
-# Assign "Write" role for contributors, "Read" for observers
-```
-
-### For teammates (first time)
-```bash
-git clone https://github.com/YOUR_USERNAME/pwnshop.git
-cd pwnshop
-npm install
-cp .env.example .env
-# Edit .env — add GROQ_API_KEY
-mysql -u root -p -e "CREATE DATABASE pwnshop;"
-mysql -u root -p pwnshop < pwnshop.sql
-npm run dev
-```
 
 ### Daily workflow
 ```bash
