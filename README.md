@@ -3,7 +3,7 @@
 > **Authorized security training use only.**
 > This application contains deliberate, known vulnerabilities. Do not deploy it on a public-facing or production server. Keep your repository private.
 
-Pwnshop is an intentionally vulnerable Nigerian e-commerce platform built for hands-on web application penetration testing training. It covers 41 vulnerabilities mapped to the OWASP Top 10 (2025) and OWASP LLM Top 10, including SQL injection, stored XSS, SSRF, SSTI leading to RCE, prototype pollution, path traversal, and AI/LLM-specific attack chains.
+Pwnshop is an intentionally vulnerable e-commerce platform built for hands-on web application penetration testing training. It covers 41 vulnerabilities mapped to the OWASP Top 10 (2025) and OWASP LLM Top 10, including SQL injection, stored XSS, SSRF, SSTI leading to RCE, prototype pollution, path traversal, and AI/LLM-specific attack chains.
 
 ---
 <img width="1920" height="1001" alt="image" src="https://github.com/user-attachments/assets/72f39af3-503b-4f96-ab04-a0ce0ea7c4cf" />
@@ -15,7 +15,7 @@ Pwnshop is an intentionally vulnerable Nigerian e-commerce platform built for ha
 | Runtime | Node.js 14+ |
 | Framework | Express.js |
 | Templating | EJS |
-| Database | MySQL 5.7 |
+| Database | MySQL 8.0 |
 | Authentication | bcryptjs + express-session |
 | File Uploads | Multer |
 | PDF Generation | PDFKit |
@@ -259,13 +259,17 @@ mysql -u root -p pwnshop < pwnshop.sql
 
 ## Common Issues
 
-**"Database connection failed" on startup** - MySQL is not running, or the `pwnshop` database does not exist. Run the database setup steps above.
+**Database connection failed on startup** - MySQL is not running, or the `pwnshop` database does not exist. Run the database setup steps above.
 
-**"AI assistant is not configured"** - `GROQ_API_KEY` in `.env` is missing or incorrect. Obtain a free key at [console.groq.com](https://console.groq.com).
+**AI assistant is not configured** - `GROQ_API_KEY` in `.env` is missing or incorrect. Obtain a free key at [console.groq.com](https://console.groq.com).
 
 **Docker: app exits immediately after start** - MySQL takes 15–20 seconds to initialise. The updated `docker-compose.yml` includes a healthcheck that prevents the app container from starting until MySQL is ready. Pull the latest compose file if you see this.
 
 **Why is Lodash pinned to `4.17.4`?** - It is intentionally outdated to demonstrate CVE-2019-10744 (prototype pollution via `_.merge()`). Do not upgrade it.
+
+If you already have a MySQL instance running on the default port (3306), you should modify the docker-compose.yml file to avoid a port conflict. Change the port mapping for the database service to use 3307 on your host machine.
+
+<img width="1612" height="233" alt="image" src="https://github.com/user-attachments/assets/e11de077-df86-4f9f-ae5f-70674cb581e3" />
 
 ---
 
