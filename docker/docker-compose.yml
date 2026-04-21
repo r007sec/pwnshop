@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   app:
     build:
-      context: ..          # project root — gives Dockerfile access to src/, public/, package.json
+      context: ..
       dockerfile: docker/Dockerfile
     ports:
       - "3000:3000"
@@ -15,10 +13,9 @@ services:
       - DB_NAME=pwnshop
     depends_on:
       db:
-        condition: service_healthy   # wait until MySQL is actually ready
-
+        condition: service_healthy
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -27,12 +24,11 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ../pwnshop.sql:/docker-entrypoint-initdb.d/pwnshop.sql  # auto-imports on first run
+      - ../pwnshop.sql:/docker-entrypoint-initdb.d/pwnshop.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ppassword"]
       interval: 10s
       timeout: 5s
       retries: 6
-
 volumes:
   db_data:
