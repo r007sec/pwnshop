@@ -7,6 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
         :root{--purple-deep:#3B0764;--purple-mid:#6D28D9;--purple-light:#A855F7;--purple-pale:#F3E8FF;--black:#0D0D0D;--white:#FFFFFF;--gray-100:#F8F5FF;--gray-200:#EDE9F6;--gray-500:#6B7280;--accent:#C026D3;}
         *{box-sizing:border-box;margin:0;padding:0;}
@@ -92,6 +97,7 @@
 
         @media(max-width:768px){.editor-layout{grid-template-columns:1fr;}}
     </style>
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
 </head>
 <body>
 <nav class="topbar">
@@ -254,5 +260,7 @@ const initTpl = document.getElementById('tpl');
 if (initTpl && initTpl.value) updateCount(initTpl);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <%- include('chat-widget') %>
+<script src="/js/mobile-nav.js"></script>
 </body>
 </html>

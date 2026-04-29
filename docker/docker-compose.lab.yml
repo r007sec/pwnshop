@@ -1,0 +1,65 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    tmpfs:
+      - /tmp
+      - /var/tmp
+      - /run
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ${DB_NAME:-pwnshop}
+      LAB_RESET_TOKEN: ${LAB_RESET_TOKEN}
+      LAB_RESET_SCRIPT: /usr/src/app/scripts/reset-lab-inside.sh
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/usr/src/app/public/uploads
+      - ../pwnshop.sql:/usr/src/app/pwnshop.sql:ro
+      - ../scripts:/usr/src/app/scripts:ro
+      - ../src:/usr/src/app/src:ro
+      - ../public/uploads-seed:/usr/src/app/public/uploads-seed:ro
+      - ../package.json:/usr/src/app/package.json:ro
+      - ../package-lock.json:/usr/src/app/package-lock.json:ro
+      - ../docker:/usr/src/app/docker:ro
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_DATABASE: ${DB_NAME:-pwnshop}
+    command:
+      - --innodb-buffer-pool-size=128M
+      - --max-connections=50
+      - --table-open-cache=128
+      - --tmp-table-size=16M
+      - --max-heap-table-size=16M
+      - --performance-schema=OFF
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+volumes:
+  db_data:
+  uploads_data:

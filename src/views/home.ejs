@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pwnshop - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <style>
         :root {
             --purple-deep:   #3B0764;
@@ -50,6 +56,8 @@
         .btn-logout:hover { border-color: #f87171; color: #f87171 !important; }
         .btn-login { background: var(--white); color: var(--purple-deep) !important; border: none; border-radius: 8px; padding: 7px 16px; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: all 0.2s; }
         .btn-login:hover { background: var(--purple-pale); }
+
+        /* ── Layout ── */
         .page-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 24px; max-width: 1400px; margin: 28px auto; padding: 0 20px; }
         .sidebar { background: var(--white); border-radius: 14px; box-shadow: 0 2px 12px rgba(109,40,217,0.07); padding: 20px 16px; height: fit-content; position: sticky; top: 80px; }
         .sidebar h5 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--purple-mid); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--purple-pale); }
@@ -63,21 +71,75 @@
         .sidebar-ad h6 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin: 0; }
         .sidebar-ad .ad-btn { display: inline-block; background: var(--white); color: var(--purple-deep); font-weight: 700; font-size: 0.8rem; border-radius: 6px; padding: 6px 14px; text-decoration: none; transition: all 0.2s; }
         .sidebar-ad .ad-btn:hover { background: var(--purple-pale); }
-        .carousel { border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(59,7,100,0.18); margin-bottom: 32px; }
-        .carousel-item img { height: 320px; object-fit: cover; filter: brightness(0.75); }
+
+        /* ── Carousel: fills the full main column, no right gap ── */
+        .carousel {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(59,7,100,0.18);
+            margin-bottom: 32px;
+            width: 100%;
+        }
+        .carousel-inner, .carousel-item { width: 100%; }
+        .carousel-item img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.75);
+            display: block;
+        }
         .carousel-caption { bottom: 36px; text-align: left; left: 48px; }
         .carousel-caption h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
         .carousel-caption p { font-size: 1rem; opacity: 0.9; margin-bottom: 14px; }
         .carousel-caption .btn { border-radius: 8px; font-weight: 700; padding: 10px 24px; font-size: 0.9rem; }
+
         .section-heading { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--purple-deep); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .section-heading::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, var(--purple-pale), transparent); border-radius: 2px; }
-        .seller-card { background: var(--white); border-radius: 14px; border: 1.5px solid var(--gray-200); padding: 20px 16px; text-align: center; transition: all 0.22s; cursor: pointer; }
+
+        /* ── Seller cards: big image covers top ~60% of card ── */
+        .seller-card {
+            background: var(--white);
+            border-radius: 14px;
+            border: 1.5px solid var(--gray-200);
+            overflow: hidden;
+            transition: all 0.22s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
         .seller-card:hover { border-color: var(--purple-light); box-shadow: 0 6px 24px rgba(109,40,217,0.14); transform: translateY(-3px); }
-        .seller-img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; margin: 0 auto 12px; display: block; border: 2px solid var(--purple-pale); }
-        .seller-img-placeholder { width: 72px; height: 72px; background: var(--gray-200); border-radius: 10px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-        .seller-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--purple-deep); margin-bottom: 2px; }
-        .seller-badge { display: inline-block; background: var(--purple-pale); color: var(--purple-mid); font-size: 0.75rem; font-weight: 600; border-radius: 20px; padding: 2px 10px; margin-top: 4px; }
-        .seller-stock { font-size: 0.82rem; color: var(--gray-500); margin: 4px 0 0; }
+        .seller-card-img {
+            width: 100%;
+            height: 165px;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+        }
+        .seller-card-img-placeholder {
+            width: 100%;
+            height: 165px;
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            flex-shrink: 0;
+        }
+        .seller-card-body {
+            padding: 12px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            text-align: center;
+        }
+        .seller-product-name { font-weight: 600; font-size: 0.88rem; color: var(--black); line-height: 1.3; }
+        .seller-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--purple-deep); }
+        .seller-badge { display: inline-block; background: var(--purple-pale); color: var(--purple-mid); font-size: 0.75rem; font-weight: 600; border-radius: 20px; padding: 2px 10px; width: fit-content; }
+        .seller-tagline { font-size: 0.78rem; color: var(--gray-500); line-height: 1.5; padding-top: 8px; border-top: 1px solid var(--gray-200); margin-top: 2px; }
+
+        /* ── Product cards ── */
         .product-card { background: var(--white); border-radius: 14px; border: 1.5px solid var(--gray-200); overflow: hidden; transition: all 0.22s; display: flex; flex-direction: column; }
         .product-card:hover { border-color: var(--purple-light); box-shadow: 0 8px 28px rgba(109,40,217,0.13); transform: translateY(-4px); }
         .product-card img { height: 190px; width: 100%; object-fit: cover; }
@@ -93,6 +155,7 @@
         footer { background: var(--purple-deep); color: rgba(255,255,255,0.6); text-align: center; padding: 24px; font-size: 0.85rem; margin-top: 48px; }
         footer strong { color: var(--purple-light); }
     </style>
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
 </head>
 <body>
     <nav class="topbar">
@@ -193,19 +256,22 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="seller-card">
                                 <% if (sellerProduct && sellerProduct.image) { %>
-                                    <img src="<%= sellerProduct.image %>" alt="<%= sellerProduct.name %>" class="seller-img">
-                                    <div class="product-name"><%= sellerProduct.name %></div>
-                                    <div class="seller-stock"><%= sellerProduct.available %> pcs available</div>
+                                    <img src="<%= sellerProduct.image %>" alt="<%= sellerProduct.name %>" class="seller-card-img">
                                 <% } else { %>
-                                    <div class="seller-img-placeholder">🛍️</div>
-                                    <div class="product-name">No product yet</div>
-                                    <div class="seller-stock">0 pcs available</div>
+                                    <div class="seller-card-img-placeholder">🛍️</div>
                                 <% } %>
-                                <div class="seller-name mt-2"><%= seller.username %></div>
-                                <span class="seller-badge">⭐ Featured Seller</span>
-                                <% if (seller.seller_tagline) { %>
-                                    <div style="font-size:0.78rem;color:var(--gray-500);margin-top:8px;line-height:1.5;text-align:left;padding-top:8px;border-top:1px solid var(--gray-200);"><%= seller.seller_tagline %></div>
-                                <% } %>
+                                <div class="seller-card-body">
+                                    <% if (sellerProduct) { %>
+                                        <div class="seller-product-name"><%= sellerProduct.name %></div>
+                                    <% } else { %>
+                                        <div class="seller-product-name" style="color:var(--gray-500);">No product yet</div>
+                                    <% } %>
+                                    <div class="seller-name"><%= seller.username %></div>
+                                    <span class="seller-badge">⭐ Featured Seller</span>
+                                    <% if (seller.seller_tagline) { %>
+                                        <div class="seller-tagline"><%= seller.seller_tagline %></div>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     <% }); %>
@@ -241,5 +307,6 @@
     <footer>&copy; <%= new Date().getFullYear() %> <strong>Pwnshop</strong>. All rights reserved.</footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <%- include('chat-widget') %>
+    <script src="/js/mobile-nav.js"></script>
 </body>
 </html>

@@ -1,19 +1,25 @@
-FROM node:14
-
-# Set the working directory
+FROM node:18-bullseye
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Create non-root user for app
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Install mysql client and gosu
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends default-mysql-client gosu \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the application code
 COPY . .
+COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Expose the application port
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/src/app/scripts/*.sh && \
+    chown -R appuser:appuser /usr/src/app && \
+    mkdir -p /usr/src/app/public/uploads && \
+    chmod 777 /usr/src/app/public/uploads
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 EXPOSE 3000
-
-# Command to run the application
 CMD ["node", "src/app.js"]

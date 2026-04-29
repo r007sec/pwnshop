@@ -103,6 +103,7 @@
         footer { background: var(--purple-deep); color: rgba(255,255,255,0.45); text-align: center; padding: 22px; font-size: 0.82rem; margin-top: 60px; }
         footer strong { color: var(--purple-light); }
     </style>
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
 </head>
 <body>
 
@@ -987,5 +988,7 @@ function setActive(btn) {
     btn.classList.add('active');
 }
 </script>
+    <%- include('chat-widget') %>
+<script src="/js/mobile-nav.js"></script>
 </body>
 </html>

@@ -1,0 +1,364 @@
+/* Mobile-only overrides to preserve existing desktop look. */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+video,
+iframe,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 10px 8px;
+    cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    margin: 4px 0;
+}
+
+@media (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        margin-left: auto;
+    }
+
+    .topbar .container.mobile-nav-ready {
+        align-items: center;
+    }
+
+    .topbar .container.mobile-nav-ready .navbar-brand {
+        margin-right: 0;
+    }
+
+    .topbar .container.mobile-nav-ready .mobile-nav-section {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .topbar .container.mobile-nav-ready:not(.mobile-menu-open) .mobile-nav-section {
+        display: none !important;
+    }
+
+    .topbar .container.mobile-nav-ready.mobile-menu-open .mobile-nav-section {
+        display: flex !important;
+        order: 10;
+        gap: 8px;
+    }
+
+    .topbar .container.mobile-nav-ready.mobile-menu-open .nav-links,
+    .topbar .container.mobile-nav-ready.mobile-menu-open .nav-right,
+    .topbar .container.mobile-nav-ready.mobile-menu-open .navbar-nav {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .topbar .container.mobile-nav-ready.mobile-menu-open .search-wrap {
+        display: flex !important;
+    }
+
+    .topbar .container.mobile-nav-ready.mobile-menu-open .nav-right > li,
+    .topbar .container.mobile-nav-ready.mobile-menu-open .navbar-nav > li {
+        flex: 1 1 100%;
+    }
+
+    .topbar .container {
+        flex-wrap: wrap;
+        padding: 10px 14px;
+        gap: 10px;
+        overflow-x: clip;
+    }
+
+    .topbar,
+    .topbar .container,
+    .page-wrap,
+    .product-wrap,
+    .two-col,
+    main,
+    aside {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .topbar .container > * {
+        min-width: 0;
+    }
+
+    .search-wrap,
+    .topbar .search-bar {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .nav-links,
+    .topbar .navbar-nav.flex-row {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .nav-right {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .page-wrap,
+    .product-wrap,
+    .two-col {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .page-wrap > aside,
+    .page-wrap > main {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .page-wrap > main {
+        order: 1;
+    }
+
+    .page-wrap > aside {
+        order: 2;
+    }
+
+    .sidebar {
+        position: static;
+        top: auto;
+    }
+
+    .carousel-item img {
+        height: 240px;
+    }
+
+    .carousel-caption {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .carousel-caption h2 {
+        font-size: 1.4rem;
+    }
+
+    .product-actions,
+    .cart-row {
+        flex-wrap: wrap;
+    }
+
+    .info-panel,
+    .review-form-card,
+    .review-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar .container {
+        padding: 10px 12px;
+    }
+
+    .search-wrap {
+        width: 100%;
+    }
+
+    .search-wrap input {
+        min-width: 0;
+    }
+
+    .topbar .search-bar {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .nav-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .navbar-brand {
+        font-size: 1.15rem !important;
+    }
+
+    .btn-cart,
+    .btn-seller,
+    .btn-add-product,
+    .btn-dashboard,
+    .btn-login,
+    .btn-logout {
+        padding: 6px 10px;
+        font-size: 0.8rem !important;
+    }
+
+    .page-wrap {
+        margin: 18px auto !important;
+        padding: 0 12px !important;
+    }
+
+    .product-title {
+        font-size: 1.35rem !important;
+    }
+
+    .product-price {
+        font-size: 1.45rem !important;
+    }
+
+    .qty-wrap {
+        width: 100%;
+    }
+
+    .qty-wrap input {
+        width: 100%;
+    }
+
+    .btn-addcart,
+    .btn-view {
+        width: 100%;
+    }
+
+    .section-heading,
+    .reviews-heading {
+        font-size: 1.15rem !important;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .topbar .container {
+        gap: 8px;
+    }
+
+    .navbar-brand {
+        width: 100%;
+        font-size: 1.05rem !important;
+        justify-content: center;
+    }
+
+    .nav-links {
+        display: flex;
+    }
+
+    .search-wrap,
+    .topbar .search-bar {
+        order: 2;
+    }
+
+    .search-wrap button {
+        flex: 0 0 auto;
+    }
+
+    .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .nav-right > li {
+        flex: 1 1 48%;
+        min-width: 0;
+    }
+
+    .btn-cart,
+    .btn-login,
+    .btn-logout,
+    .btn-seller,
+    .btn-add-product,
+    .btn-dashboard,
+    .user-chip {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .search-wrap input,
+    .topbar .search-bar {
+        font-size: 0.85rem;
+        padding: 9px 12px;
+    }
+
+    .carousel-item img {
+        height: 190px;
+    }
+
+    .carousel-caption h2 {
+        font-size: 1.15rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.85rem;
+    }
+
+    .sidebar,
+    .info-panel,
+    .review-form-card,
+    .review-card,
+    .product-card,
+    .seller-card {
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 375px) {
+    .topbar .container {
+        padding: 8px 10px;
+    }
+
+    .navbar-brand {
+        font-size: 0.98rem !important;
+    }
+
+    .btn-cart,
+    .btn-login,
+    .btn-logout,
+    .btn-seller,
+    .btn-add-product,
+    .btn-dashboard,
+    .user-chip,
+    .nav-right .nav-link {
+        font-size: 0.74rem !important;
+        padding: 6px 8px;
+    }
+
+    .search-wrap input,
+    .topbar .search-bar,
+    .search-wrap button {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}

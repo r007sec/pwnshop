@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   app:
     build:
@@ -15,13 +16,13 @@ services:
       db:
         condition: service_healthy
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: pwnshop
     ports:
-      - "3306:3306"
+      - "3307:3306"    # ← only change
     volumes:
       - db_data:/var/lib/mysql
       - ../pwnshop.sql:/docker-entrypoint-initdb.d/pwnshop.sql
