@@ -126,6 +126,20 @@
         .empty-state p { color: var(--gray-500); font-size: 0.85rem; }
         .btn-browse { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; background: var(--purple-deep); color: var(--white); border: none; border-radius: 10px; padding: 10px 22px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: background 0.2s; }
         .btn-browse:hover { background: var(--purple-mid); color: var(--white); }
+
+        /* Modal Styles */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; pointer-events: auto; }
+        .modal-overlay.open { display: flex; }
+        .modal-dialog { background: var(--white); border-radius: 16px; border: 1.5px solid var(--gray-200); padding: 28px 24px; max-width: 500px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.15); position: relative; pointer-events: auto; }
+        .modal-dialog input { pointer-events: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1.5px solid var(--gray-200); padding-bottom: 16px; }
+        .modal-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--black); margin: 0; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--gray-500); cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.2s; }
+        .modal-close:hover { background: var(--gray-100); color: var(--black); }
+        .modal-body { margin-bottom: 20px; }
+        .btn-fund-wallet { background: var(--purple-deep); color: var(--white); border: none; border-radius: 10px; padding: 12px 18px; font-size: 0.85rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 12px; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; font-family: 'DM Sans', sans-serif; }
+        .btn-fund-wallet:hover { background: var(--purple-mid); }
+
         .orders-pagination { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: auto; padding: 24px 0 8px; }
         .pg-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--white); border: 1.5px solid var(--gray-200); color: var(--black); border-radius: 10px; padding: 8px 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.18s; }
         .pg-btn:hover:not(:disabled) { background: var(--purple-pale); border-color: var(--purple-mid); color: var(--purple-mid); }
@@ -183,6 +197,7 @@
             <div class="wallet-strip">
                 <div class="wl">Wallet Balance</div>
                 <div class="wa">₦<%= parseFloat(user.wallet_amount || 0).toFixed(2) %></div>
+                <button class="btn-fund-wallet" onclick="openFundWalletModal()"><i class="bi bi-credit-card"></i> Fund Wallet</button>
             </div>
 
             <div class="profile-info">
@@ -236,55 +251,16 @@
 
 
     <main>
-        <div class="wallet-topup-card">
-            <div class="wallet-topup-title"><i class="bi bi-credit-card"></i> Fund Wallet with Vulnbank</div>
-            <div class="wallet-topup-sub">Top up your local Pwnshop wallet using a Vulnbank virtual card.</div>
-
-            <% if (walletSuccess) { %>
+        <% if (walletSuccess) { %>
+            <div class="wallet-topup-card">
                 <div class="wallet-msg ok"><i class="bi bi-check-circle-fill"></i> <%= walletSuccess %></div>
-            <% } %>
-            <% if (walletError) { %>
+            </div>
+        <% } %>
+        <% if (walletError) { %>
+            <div class="wallet-topup-card">
                 <div class="wallet-msg err"><i class="bi bi-exclamation-triangle-fill"></i> <%= walletError %></div>
-            <% } %>
-
-            <% if (vulnbankEnabled) { %>
-            <form method="POST" action="/wallet/topup/vulnbank">
-                <div class="wallet-form-grid-1">
-                    <label class="info-label">Amount (NGN)</label>
-                    <input class="avatar-url-input" type="number" name="amount" min="1" step="0.01" placeholder="5000" required>
-                </div>
-                <div class="wallet-form-grid">
-                    <div>
-                        <label class="info-label">Card Number</label>
-                        <input class="avatar-url-input" type="text" name="card_number" placeholder="4111 1111 1111 1111" required>
-                    </div>
-                    <div>
-                        <label class="info-label">Card Name</label>
-                        <input class="avatar-url-input" type="text" name="card_name" value="<%= user.username %>" required>
-                    </div>
-                    <div>
-                        <label class="info-label">Expiry</label>
-                        <input class="avatar-url-input" type="text" name="card_expiry" placeholder="MM/YY" required>
-                    </div>
-                    <div>
-                        <label class="info-label">CVV</label>
-                        <input class="avatar-url-input" type="password" name="card_cvv" placeholder="123" required>
-                    </div>
-                </div>
-
-                <% if (vulnbankLabVuln) { %>
-                    <div class="wallet-form-grid-1" style="margin-top:10px;">
-                        <label class="info-label">[Lab] Credited Amount Override</label>
-                        <input class="avatar-url-input" type="number" step="0.01" name="credited_amount" placeholder="Optional when lab vuln mode is enabled">
-                    </div>
-                <% } %>
-
-                <button class="btn-topup" type="submit"><i class="bi bi-lightning-charge-fill"></i> Fund Wallet</button>
-            </form>
-            <% } else { %>
-                <div class="wallet-msg err">Vulnbank is not configured yet. Add merchant environment variables on the server first.</div>
-            <% } %>
-        </div>
+            </div>
+        <% } %>
 
         <div class="tab-bar">
             <button class="tab-btn active" id="tab-orders-btn" onclick="switchTab('orders')">
@@ -399,7 +375,66 @@
     &copy; <%= new Date().getFullYear() %> <strong>Pwnshop</strong>. All rights reserved.
 </footer>
 
+<!-- Fund Wallet Modal -->
+<div class="modal-overlay" id="fundWalletModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="bi bi-credit-card"></i> Fund Wallet with Vulnbank</h3>
+            <button class="modal-close" onclick="closeFundWalletModal()"><i class="bi bi-x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.85rem;color:var(--gray-700);margin-bottom:16px;">Top up your local Pwnshop wallet using a Vulnbank virtual card.</p>
+            <form method="POST" action="/wallet/topup/vulnbank" id="fundWalletForm">
+                <div class="wallet-form-grid-1">
+                    <label class="info-label">Amount (NGN)</label>
+                    <input class="avatar-url-input" type="number" name="amount" min="1" step="0.01" placeholder="5000" required>
+                </div>
+                <div class="wallet-form-grid">
+                    <div>
+                        <label class="info-label">Card Number</label>
+                        <input class="avatar-url-input" type="text" name="card_number" placeholder="4111 1111 1111 1111" required>
+                    </div>
+                    <div>
+                        <label class="info-label">Card Name</label>
+                        <input class="avatar-url-input" type="text" name="card_name" value="<%= user.username %>" required>
+                    </div>
+                    <div>
+                        <label class="info-label">Expiry</label>
+                        <input class="avatar-url-input" type="text" name="card_expiry" placeholder="MM/YY" required>
+                    </div>
+                    <div>
+                        <label class="info-label">CVV</label>
+                        <input class="avatar-url-input" type="password" name="card_cvv" placeholder="123" required>
+                    </div>
+                </div>
+                <% if (vulnbankLabVuln) { %>
+                    <div class="wallet-form-grid-1" style="margin-top:10px;">
+                        <label class="info-label">[Lab] Credited Amount Override</label>
+                        <input class="avatar-url-input" type="number" step="0.01" name="credited_amount" placeholder="Optional when lab vuln mode is enabled">
+                    </div>
+                <% } %>
+                <button class="btn-topup" type="submit" style="width:100%;"><i class="bi bi-lightning-charge-fill"></i> Fund Wallet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+function openFundWalletModal() {
+    document.getElementById('fundWalletModal').classList.add('open');
+}
+
+function closeFundWalletModal() {
+    document.getElementById('fundWalletModal').classList.remove('open');
+}
+
+// Close modal when clicking outside the dialog
+document.getElementById('fundWalletModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeFundWalletModal();
+    }
+});
+
 var _pgCurrent = 0;
 var _pgSize    = 5;
 
