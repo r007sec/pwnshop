@@ -139,8 +139,8 @@
             you will encounter in production systems.
         </p>
         <div class="hero-stats">
-            <div class="hero-stat"><div class="num">41</div><div class="lbl">Total findings</div></div>
-            <div class="hero-stat"><div class="num">35</div><div class="lbl">Web app vulns</div></div>
+            <div class="hero-stat"><div class="num">45</div><div class="lbl">Total findings</div></div>
+            <div class="hero-stat"><div class="num">38</div><div class="lbl">Web app vulns</div></div>
             <div class="hero-stat"><div class="num">6</div><div class="lbl">AI / LLM vulns</div></div>
         </div>
     </div>
@@ -150,8 +150,8 @@
 
     <!-- FILTER -->
     <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterAll(this)">All (41)</button>
-        <button class="filter-btn" onclick="filterType('web', this)">Web App (35)</button>
+        <button class="filter-btn active" onclick="filterAll(this)">All (45)</button>
+        <button class="filter-btn" onclick="filterType('web', this)">Web App (38)</button>
         <button class="filter-btn" onclick="filterType('ai', this)">AI / LLM (6)</button>
         <button class="filter-btn" onclick="filterSev('critical', this)">Critical</button>
         <button class="filter-btn" onclick="filterSev('high', this)">High</button>
@@ -819,6 +819,78 @@
             <div class="vuln-meta">
                 <span class="meta-item"><strong>Status:</strong> Fixed</span>
                 <span class="meta-item"><strong>Related:</strong> PWN-016 (coupon abuse)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="vuln-card" data-type="web" data-sev="high">
+        <div class="vuln-card-head" onclick="toggle(this)">
+            <span class="vuln-id">PWN-042</span>
+            <span class="vuln-title">Vulnbank Wallet Funding — Credited Amount Override</span>
+            <span class="owasp-tag">Payments</span>
+            <span class="sev-badge sev-high">High</span>
+            <i class="bi bi-chevron-down chevron"></i>
+        </div>
+        <div class="vuln-card-body">
+            <p class="vuln-desc">In lab mode, the wallet top-up flow reads <code>credited_amount</code> from the request body instead of always using the amount actually charged by Vulnbank. A learner can pay one amount and credit a different amount to their local wallet.</p>
+            <div class="vuln-meta">
+                <span class="meta-item"><strong>Endpoint:</strong> POST /wallet/topup/vulnbank</span>
+                <span class="meta-item"><strong>Technique:</strong> Amount override / parameter tampering</span>
+                <span class="meta-item"><strong>Lab toggle:</strong> VULNBANK_LAB_VULN=1</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="vuln-card" data-type="web" data-sev="high">
+        <div class="vuln-card-head" onclick="toggle(this)">
+            <span class="vuln-id">PWN-043</span>
+            <span class="vuln-title">Vulnbank Wallet Funding — Tiny / Negative Amount Abuse</span>
+            <span class="owasp-tag">Payments</span>
+            <span class="sev-badge sev-high">High</span>
+            <i class="bi bi-chevron-down chevron"></i>
+        </div>
+        <div class="vuln-card-body">
+            <p class="vuln-desc">In lab mode, the wallet funding checks allow extremely small or negative values to slip through in ways that would normally be rejected. That makes it possible to pair a near-zero card charge with a large credited amount and manipulate the wallet balance.</p>
+            <div class="vuln-meta">
+                <span class="meta-item"><strong>Endpoint:</strong> POST /wallet/topup/vulnbank</span>
+                <span class="meta-item"><strong>Technique:</strong> Value validation bypass</span>
+                <span class="meta-item"><strong>Lab toggle:</strong> VULNBANK_LAB_VULN=1</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="vuln-card" data-type="web" data-sev="high">
+        <div class="vuln-card-head" onclick="toggle(this)">
+            <span class="vuln-id">PWN-044</span>
+            <span class="vuln-title">Vulnbank Payment — Unverified Settlement Bypass</span>
+            <span class="owasp-tag">Payments</span>
+            <span class="sev-badge sev-high">High</span>
+            <i class="bi bi-chevron-down chevron"></i>
+        </div>
+        <div class="vuln-card-body">
+            <p class="vuln-desc">Both wallet funding and checkout continue when Vulnbank verification fails while lab mode is enabled. That means a payment that is not fully settled can still be accepted by the local app and used to credit the wallet or finalize an order.</p>
+            <div class="vuln-meta">
+                <span class="meta-item"><strong>Endpoints:</strong> POST /wallet/topup/vulnbank, POST /checkout</span>
+                <span class="meta-item"><strong>Technique:</strong> Verification / settlement bypass</span>
+                <span class="meta-item"><strong>Lab toggle:</strong> VULNBANK_LAB_VULN=1</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="vuln-card" data-type="web" data-sev="medium">
+        <div class="vuln-card-head" onclick="toggle(this)">
+            <span class="vuln-id">PWN-045</span>
+            <span class="vuln-title">Vulnbank Verification — Null Amount Fallback</span>
+            <span class="owasp-tag">Payments</span>
+            <span class="sev-badge sev-medium">Medium</span>
+            <i class="bi bi-chevron-down chevron"></i>
+        </div>
+        <div class="vuln-card-body">
+            <p class="vuln-desc">If the Vulnbank verification response does not include a parseable amount, the local comparison falls back to <code>true</code> because the amount check treats <code>null</code> as acceptable. This logic flaw exists outside lab mode and weakens the trust boundary around remote payment verification.</p>
+            <div class="vuln-meta">
+                <span class="meta-item"><strong>Endpoints:</strong> POST /wallet/topup/vulnbank, POST /checkout</span>
+                <span class="meta-item"><strong>Technique:</strong> Null-amount verification fallback</span>
+                <span class="meta-item"><strong>Mode:</strong> Always on</span>
             </div>
         </div>
     </div>
