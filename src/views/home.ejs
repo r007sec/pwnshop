@@ -156,6 +156,13 @@
         .btn-addcart:hover { background: var(--purple-mid); color: var(--white); text-decoration: none; }
         footer { background: var(--purple-deep); color: rgba(255,255,255,0.6); text-align: center; padding: 24px; font-size: 0.85rem; margin-top: 48px; }
         footer strong { color: var(--purple-light); }
+
+        @media (max-width: 992px) {
+            /* Reset sticky on sidebar column — mobile-responsive.css only resets .sidebar */
+            .sidebar-col { position: static; top: auto; }
+            /* Remove fixed min-width on brand — too wide for mobile */
+            .navbar-brand { min-width: unset !important; }
+        }
     </style>
     <link rel="stylesheet" href="/css/mobile-responsive.css">
 </head>

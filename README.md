@@ -3,7 +3,7 @@
 > **Authorized security training use only.**
 > This application contains deliberate, known vulnerabilities. Do not deploy it on a public-facing or production server. Keep your repository private.
 
-Pwnshop is an intentionally vulnerable e-commerce platform built for hands-on web application penetration testing training. It covers over 40 vulnerabilities mapped to the OWASP Top 10 (2025) and OWASP LLM Top 10, including SQL injection, stored XSS, SSRF, SSTI leading to RCE, prototype pollution, path traversal, business logic and AI/LLM-specific attack chains.
+Pwnshop is an intentionally vulnerable e-commerce platform built for hands-on web application penetration testing training. It covers 45 vulnerabilities mapped to the OWASP Top 10 (2025) and OWASP LLM Top 10, including SQL injection, stored XSS, SSRF, SSTI leading to RCE, prototype pollution, path traversal, business logic and AI/LLM-specific attack chains.
 
 ---
 
@@ -100,6 +100,30 @@ Save or screenshot this output - the credentials are also stored in `.env.lab`.
 
 ## Installation
 
+### Pull from Docker Hub (Fastest)
+
+If you just want to run the app without cloning the repository, pull the pre-built image directly:
+
+```bash
+docker pull ctfsec/pwnshop:latest
+```
+
+You will need a MySQL instance running and accessible. Pass your credentials as environment variables:
+
+```bash
+docker run -p 3000:3000 \
+  -e DB_HOST=your-mysql-host \
+  -e DB_USER=root \
+  -e DB_PASSWORD=yourpassword \
+  -e DB_NAME=pwnshop \
+  -e GROQ_API_KEY=your_groq_api_key_here \
+  -e SESSION_SECRET=weak-secret-123 \
+  -e PORT=3000 \
+  ctfsec/pwnshop:latest
+```
+
+For the full lab experience including seed data, auto-reset and the healer, use the Docker Compose method below instead.
+
 ### With Docker (Lab Setup - One Command)
 
 For the full lab environment including seed images and the auto-reset feature, use the provided setup script.
@@ -163,7 +187,7 @@ These accounts are seeded and preserved across lab resets. Passwords are in `pwn
 | User | `alice` | Regular buyer account |
 | User | `olajide` | Regular buyer account |
 
-All seed users start with a wallet balance of ₦10,000.
+All seed users start with a wallet balance of N10,000.
 
 ---
 
@@ -190,7 +214,7 @@ All seed users start with a wallet balance of ₦10,000.
 
 **Vulnbank integration** adds two payment paths for buyers in lab mode: fund the local wallet with a Vulnbank virtual card from the profile page, or pay for an order directly with a Vulnbank card during checkout. When enabled, the app charges the card through Vulnbank first, then credits the wallet or completes the order after verification.
 
-Set `VULNBANK_LAB_VULN=1` in `.env.lab` before rebuilding the lab if you want the training weaknesses to be active. The feature is now documented as four separate findings: `credited_amount` override, tiny/negative amount abuse, verification bypass, and a null-amount verification fallback that remains always on.
+Set `VULNBANK_LAB_VULN=1` in `.env.lab` before rebuilding the lab if you want the training weaknesses to be active. The feature is documented as four separate findings: `credited_amount` override, tiny/negative amount abuse, verification bypass, and a null-amount verification fallback that remains always on.
 
 **Sellers** can register from any user account, manage product listings with file upload, and customise a storefront description with a live preview.
 
@@ -246,7 +270,7 @@ pwnshop/
 
 ## Vulnerability Index
 
-41 vulnerabilities are documented in-app at `/vulnerabilities`. A summary is below.
+45 vulnerabilities are documented in-app at `/vulnerabilities`. A summary is below.
 
 | ID | Title | Severity | Category |
 |---|---|---|---|
@@ -291,6 +315,10 @@ pwnshop/
 | PWN-039 | HTTP Parameter Pollution - Coupon Bypass | Medium | A06:2025 |
 | PWN-040 | SSTI -> RCE - Seller Storefront Preview | **Critical** | A05:2025 |
 | PWN-041 | Prototype Pollution - Lodash Dependency | High | A03:2025 |
+| PWN-042 | Vulnbank Wallet Funding - Credited Amount Override | High | Payments |
+| PWN-043 | Vulnbank Wallet Funding - Tiny / Negative Amount Abuse | High | Payments |
+| PWN-044 | Vulnbank Payment - Unverified Settlement Bypass | High | Payments |
+| PWN-045 | Vulnbank Verification - Null Amount Fallback | Medium | Payments |
 
 ### Notable Attack Chains
 
@@ -305,6 +333,9 @@ Seller embeds payload in product description -> `PWN-032` (indirect prompt injec
 
 **Privilege escalation without SQLi**
 `POST /register` with `role=admin` in the request body (`PWN-021`) -> instant admin account
+
+**Payment manipulation**
+`PWN-042` (amount override) + `PWN-043` (tiny charge) -> credit large wallet balance for near-zero cost
 
 ---
 
@@ -338,7 +369,6 @@ mysql -u root -p pwnshop < pwnshop.sql
 **Why is Lodash pinned to `4.17.4`?** - It is intentionally outdated to demonstrate CVE-2019-10744 (prototype pollution via `_.merge()`). Do not upgrade it.
 
 ---
-
 
 ## Legal Notice
 
